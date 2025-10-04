@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>bio malika</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="icon" type="image/x-icon" href="./assets/favico/default.ico" />
+
+  <style>
+    .username-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .uid-badge {
+      position: absolute;
+      top: -30px;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: bold;
+      opacity: 0;
+      transfor<div id="username": translateY(5px) scale(0.95);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+    }
+
+    .username-wrapper:hover .uid-badge {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    #username {
+      color: white;
+      font-weight: bold;
+      font-size: large;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body class="custom-cursor">
+  <!-- Wideo w tle -->
+  <div id="video-background">
+    <video id="myVideo" muted autoplay loop>
+      <source src="./assets/back/snaptik_7507393302765866270.mp4" type="video/mp4" />
+      Twoja przeglądarka nie obsługuje HTML5 video.
+    </video>
+  </div>
+
+  <!-- Overlay z kliknięciem -->
+  <div id="overlay">
+    <div id="enter-text"><Welcome..."></Welcome></div>
+  </div>
+
+  <!-- Muzyka -->
+  <div id="audio-background">
+    <audio id="myAudio" autoplay loop>
+      <source src="./assets/music/CAFE x HOODTRAP (Prod.CLOUDEE) - CLOUDEE beats.mp3" type="audio/mpeg" />
+      Twoja przeglądarka nie obsługuje audio.
+    </audio>
+  </div>
+
+  <!-- Blurred box -->
+  <div id="blurred-box">
+    <img src="./assets/pfp/48564f5bc85c1c39cf64679df285a7ac.jpg" alt="Profile Picture" />
+
+    <!-- Nick + UID -->
+    <div class="username-wrapper">
+      <div class="uid-badge">UID 2</div>
+      <p id="username">malik__</p>
+    </div>
+
+    <div class="user-description">
+      <p id="user-description" style="color: white;">WWA</p>
+    </div>
+
+    <div class="links">
+      <a href="https://open.spotify.com/user/3134nifpe3llz2qlagfmvlj5vdse?si=38933dfb3f10465f" target="_blank"><i class="fab fa-spotify"></i></a>
+    </div>
+  </div>
+
+  <!-- Licznik odwiedzin -->
+  <div id="visitor-counter" style="position: fixed; bottom: 10px; left: 10px; color: white; font-size: 14px; z-index: 9999;">
+    ilość odwiedzin: <span id="counter">...</span>
+  </div>
+
+  <!-- Skrypty -->
+  <script>
+    // Ładowanie licznika odwiedzin
+    fetch('counter.php')
+      .then(response => response.text())
+      .then(count => {
+        document.getElementById('counter').innerText = count;
+      });
+
+    // Efekt odchylania blurred-boxa
+    const box = document.getElementById('blurred-box');
+    document.addEventListener('mousemove', (e) => {
+      const x = (window.innerWidth / 2 - e.clientX) / 25;
+      const y = (window.innerHeight / 2 - e.clientY) / 25;
+      box.style.transform = `translate(-50%, -50%) rotateY(${-x}deg) rotateX(${y}deg)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      box.style.transform = `translate(-50%, -50%) rotateY(0deg) rotateX(0deg)`;
+    });
+
+    // Kliknięcie w overlay -> ukrycie overlayu
+    const overlay = document.getElementById('overlay');
+    overlay.addEventListener('click', () => {
+      overlay.style.display = 'none';
+    });
+  </script>
+
+  <!-- Twoje dodatkowe skrypty -->
+  <script src="./assets/js/script.js"></script>
+  <script src="./assets/js/title.js"></script>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background-color: #111;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  .star {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    background: radial-gradient(circle at center, white 0%, rgba(255,255,255,0) 60%);
+    clip-path: polygon(
+      50% 0%, 61% 35%, 98% 35%, 68% 57%, 
+      79% 91%, 50% 70%, 21% 91%, 32% 57%, 
+      2% 35%, 39% 35%
+    );
+    will-change: transform, opacity;
+  }
+</style>
+
+<script>
+  const stars = [];
+
+  document.addEventListener("mousemove", e => {
+    const star = document.createElement("div");
+    star.classList.add("star");
+    star.style.left = e.pageX + "px";
+    star.style.top = e.pageY + "px";
+    star.style.transform = "scale(1)";
+    star.style.opacity = "1";
+    document.body.appendChild(star);
+
+    stars.push({
+      el: star,
+      x: e.pageX,
+      y: e.pageY,
+      life: 60,       // ile klatek trwa animacja
+      trail: []
+    });
+  });
+
+  function animateStars() {
+    for (let i = stars.length - 1; i >= 0; i--) {
+      const s = stars[i];
+      s.life--;
+
+      // Dodajemy ślad (ogonek)
+      s.trail.push({x: s.x, y: s.y});
+      if (s.trail.length > 5) s.trail.shift();
+
+      // Animacja gwiazdki
+      s.el.style.transform = `scale(${s.life/60}) rotate(${(60-s.life)*6}deg)`;
+      s.el.style.opacity = s.life / 60;
+
+      // Tworzenie ogonka
+      s.el.style.boxShadow = s.trail.map((t, idx) => {
+        const alpha = (idx + 1) / s.trail.length * 0.5;
+        return `${t.x - s.x}px ${t.y - s.y}px 2px rgba(255,255,255,${alpha})`;
+      }).join(',');
+
+      if (s.life <= 0) {
+        s.el.remove();
+        stars.splice(i, 1);
+      }
+    }
+    requestAnimationFrame(animateStars);
+  }
+
+  animateStars();
+</script>
+
+<!-- START: Animacja spadających gwiazdek -->
+<style>
+  .star {
+    position: absolute;
+    color: white;
+    pointer-events: none;
+    user-select: none;
+  }
+  body {
+    overflow: hidden; /* żeby gwiazdki nie wychodziły poza ekran */
+    background-color: #111; /* zmień jeśli chcesz inne tło */
+  }
+</style>
+
